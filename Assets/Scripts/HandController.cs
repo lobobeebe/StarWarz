@@ -1,71 +1,90 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
-    public GameObject HiltClip;
-    public LightsaberController LightSaber;
+    // Lightsaber Management
+    private LightsaberController mLightSaberHolding;
+    private GameObject mLightsaberTouching;
+    private GameObject mHolsterTouching;
 
-    private bool mIsCollidingHiltClip;
-    private bool mIsHoldingLightSaber;
-    private SteamVR_TrackedController mController;
-
-    private void OnEnable()
+    private ViveRoleProperty mHandRole;
+    
+    void Awake()
     {
-        // Get the Steam Controller and add event handlers
-        mController = GetComponent<SteamVR_TrackedController>();
-        mController.Gripped += HandleGripped;
-        mController.MenuButtonClicked += HandleMenuClicked;
+        mHandRole = GetComponent<ViveRoleSetter>().viveRole;
     }
-
-    private void HandleGripped(object sender, ClickedEventArgs e)
+    
+    void Update()
     {
-        if (mIsCollidingHiltClip)
+        // Grip Button = Lightsaber or Force
+        if (ViveInput.GetPressDown(mHandRole, ControllerButton.Grip))
         {
-            if (mIsHoldingLightSaber)
+            bool isUpdated = UpdateLightsaberAnchor();
+
+            // If a Lightsaber wasn't picked up or put down, begin force
+            if (!isUpdated)
             {
-                LightSaber.SetIsOn(false);
-                LightSaber.transform.parent = HiltClip.transform;
-                
-                mIsHoldingLightSaber = false;
             }
-            else
+        }
+
+        // Top Menu Button = Toggle Lightsaber
+        if (ViveInput.GetPressDown(mHandRole, ControllerButton.Menu))
+        {
+            if (mLightSaberHolding)
             {
-                LightSaber.transform.parent = transform;
-                mIsHoldingLightSaber = true;
+                mLightSaberHolding.ToggleActivateBlade();
             }
         }
     }
 
-    private void HandleMenuClicked(object sender, ClickedEventArgs e)
+    private bool UpdateLightsaberAnchor()
     {
-        if (mIsHoldingLightSaber)
+        if (mLightSaberHolding)
         {
-            if (LightSaber.GetIsOn())
+            if (mHolsterTouching != null)
             {
-                LightSaber.SetIsOn(false);
-            }
-            else
-            {
-                LightSaber.SetIsOn(true);
+                mLightSaberHolding.SetAnchor(mHolsterTouching);
+                mLightSaberHolding = null;
+
+                return true;
             }
         }
+        else
+        {
+            if (mLightsaberTouching != null)
+            {
+                mLightSaberHolding = mLightsaberTouching.GetComponentInParent<LightsaberController>();
+                mLightSaberHolding.SetAnchor(gameObject);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other == HiltClip)
+        if (!mHolsterTouching && other.gameObject.tag == "Holster")
         {
-            mIsCollidingHiltClip = true;
+            mHolsterTouching = other.gameObject;
+        }
+        else if (!mLightsaberTouching && other.gameObject.tag == "Lightsaber")
+        {
+            mLightsaberTouching = other.gameObject;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other == HiltClip)
+        if (other.gameObject.tag == "Holster" && mHolsterTouching.gameObject == other.gameObject)
         {
-            mIsCollidingHiltClip = false;
+            mHolsterTouching = null;
+        }
+        else if (other.gameObject.tag == "Lightsaber" && mLightsaberTouching.gameObject == other.gameObject)
+        {
+            mLightsaberTouching = null;
         }
     }
 }

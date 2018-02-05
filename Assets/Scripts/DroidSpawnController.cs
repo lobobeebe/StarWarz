@@ -8,8 +8,8 @@ public class DroidSpawnController : MonoBehaviour
     public GameObject Player;
 
     // Timing
-    private float mSpawnDelaySeconds = 3000;
-    private float mNextSpawnTimeSeconds;
+    private float mSpawnDelaySeconds = 300;
+    private float mNextSpawnTimeSeconds = -300;
 	
 	// Update is called once per frame
 	void Update ()
@@ -28,11 +28,7 @@ public class DroidSpawnController : MonoBehaviour
         Vector3 spawnLocation = new Vector3(-10 + Random.value * 20, -0.5f, -10 + Random.value * 20);
         GameObject droid = Instantiate(DroidPrefab, spawnLocation, Quaternion.identity);
 
-        // The droid will rise directly above its spawn location to a random height.
-        Vector3 firstTargetLocation = new Vector3(spawnLocation.x, Random.value * 3, spawnLocation.z);
-
         DroidController droidController = droid.GetComponent<DroidController>();
-        droidController.SetTargetLocation(firstTargetLocation);
         droidController.SetTargetPlayer(Player);
     }
 }

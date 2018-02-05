@@ -4,25 +4,33 @@ using UnityEngine;
 
 public class LightsaberController : MonoBehaviour
 {
-    public GameObject Blade;
+    private BladeController mBlade;
+    private GameObject mAnchor;
 
-    private bool mIsOn;
+    private bool mIsHeld;
 
-    void OnEnabled()
+    void Start()
     {
-        SetIsOn(false);
+        mBlade = GetComponentInChildren<BladeController>();
     }
 
-    public bool GetIsOn()
+    public void SetAnchor(GameObject anchor)
     {
-        return mIsOn;
+        mAnchor = anchor;
+        mBlade.ActivateBlade(false);
     }
 
-    public void SetIsOn(bool isOn)
+    public void ToggleActivateBlade()
     {
-        mIsOn = isOn;
+        mBlade.ToggleActivateBlade();
+    }
 
-        // Turn on or off the renderer
-        Blade.GetComponent<Renderer>().enabled = isOn;
+    void FixedUpdate()
+    {
+        if (mAnchor != null)
+        {
+            transform.position = mAnchor.transform.position;
+            transform.rotation = mAnchor.transform.rotation;
+        }
     }
 }
