@@ -8,7 +8,7 @@ public class UnityGesturer : MonoBehaviour
     public bool IsRightHand;
 
     // Gesturing management
-    private HandRole mHand;
+    protected HandRole mHand;
     private GestureDataReceiver mGestureReceiver;
     private GameObject mGesturingStart;
     private bool mIsGesturing;
@@ -26,7 +26,7 @@ public class UnityGesturer : MonoBehaviour
         mGestureReceiver = gestureReceiver;
     }
 
-    public void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         // If gesturing, update the reciver with the positions of the controllers
         Vector3 positionFromStart;
