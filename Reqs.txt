@@ -1,7 +1,4 @@
-# StarWarz
-School project. TBA.
-
-## Completed
+Components:
 Player Body
 * Shall be an Invisible game object representing the body
 * Shall act as the hit box for the player's torso
@@ -19,17 +16,16 @@ Player Hands
 * The Hand shall cease forwarding it's position to the Force Gesture Recognition Module when the "Grip" button is released. The Force Selection state shall be updated to the Force Gesture Recognition Module's selection.
 
 Force Gesture Recognition Module:
-* The Force Gesture Recognition module will use a Neural Network trained using Gradient Descent.
-* A Recurrent Neural Network was not used for this assignment, so a start and end point is required.
-* The Force Gesture Recognition Module shall use the down-press of the "Grip" button to activate Gesture Recognition.
-* The Force Gesture Recognition Module shall use the up-press of the "Grip" button to end Gesture Recognition and determine gesture.
-* Details of the Force Gesture Recognition will not be discussed here. For more information, see Cody Beebe.
+* TBA
 
 Holster
 * Shall provide an anchor transform for an unheld Lightsaber Hilt
+* (Optional) Holster shall be invisible until a hand is making contact with it - at which point it will be shown as an outline of a Lightsaber hilt.
 
 Lightsaber
-* TBD
+* Made of two components, Hilt and Blade
+* Hilt
+**
 
 Training Droid
 * Passive audio "buzz" emit from Droid
@@ -43,27 +39,12 @@ Laser Bolt
 * After spawning, a 5 second timer is started. If the timer completes, the game object is destroyed.
 * If the Laser Bolt touches the Lightsaber, the Laser Bolt's forward vector is set to the normalized vector difference between its location and the location of the droid that fired it.
 
-## Future Work
-Holster
-* Holster shall be invisible until a hand is making contact with it - at which point it will be shown as an outline of a Lightsaber hilt.
-
-## Contributor
-### Cody Beebe
-* Scripting of:
-** Droids
-** Lightsaber
-** Force Gesture Recognition Module
-** Hands
-** Body
-** Scenes 
-### Kevin Kuretski
-* Models
-** Environment
-** Lightsaber
-** Droids
-* Audio
-** Droids
-** Force abilities
-** Lasers
-** Lightsaber
-* Overall direction of project.
+Flow:
+* Unity Splash Screen
+* Main Menu
+** Training Mode
+** I'm Ready
+* Alt: Training Mode
+** Spawn in small cargo bay aboard ship
+** Countdown from 3 starts
+** At end of count down, single Training Droid spawns
