@@ -35,8 +35,9 @@ Training Droid
 
 Laser Bolt
 * Moves in its transform's forward direction
+* Creates an audio event at the location of the laser creation to indicate the laser was fired.
 * After spawning, a 5 second timer is started. If the timer completes, the game object is destroyed.
-* If the Laser Bolt touches the Lightsaber, the Laser Bolt's forward vector is set to the normalized vector of the vector addition of the Laser Bolt's backward vector and the velocity of the Lightsaber. The timer is reset.
+* If the Laser Bolt touches the Lightsaber, the Laser Bolt's forward vector is set to the normalized vector difference between its location and the location of the droid that fired it.
 
 Flow:
 * Unity Splash Screen
