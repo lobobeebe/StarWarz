@@ -2,8 +2,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ViveRoleSetter))]
+[RequireComponent(typeof(AudioSource))]
 public class Lifter : MonoBehaviour
 {
+    public AudioClip ForceRumble;
     public float LiftForce;
     public GameObject LiftSelector;
     public Material PositiveLiftMaterial;
@@ -14,6 +16,10 @@ public class Lifter : MonoBehaviour
     private GameObject mLiftSelector;
 
     private Vector3 mPreviousPosition;
+
+    private AudioSource mAudioSource;
+
+    private ForceLiftState mLiftState = ForceLiftState.Idle;
 
     public enum ForceLiftState
     {
@@ -33,6 +39,8 @@ public class Lifter : MonoBehaviour
             mLiftSelector = Instantiate(LiftSelector);
             mLiftSelector.SetActive(false);
         }
+
+        mAudioSource = GetComponent<AudioSource>();
     }
 
     public void FixedUpdate()
@@ -88,6 +96,10 @@ public class Lifter : MonoBehaviour
                 Rigidbody liftableRigidbody = mCurrentLiftable.GetComponent<Rigidbody>();
                 liftableRigidbody.AddForce(LiftForce * (transform.position - mPreviousPosition));
             }
+            else
+            {
+                mAudioSource.Stop();
+            }
         }
 
         mPreviousPosition = transform.position;
@@ -95,7 +107,23 @@ public class Lifter : MonoBehaviour
 
     public ForceLiftState LiftState
     {
-        get;
-        set;
+        get
+        {
+            return mLiftState;
+        }
+        set
+        {
+            mLiftState = value;
+
+            if (mLiftState == ForceLiftState.Selecting)
+            {
+                mAudioSource.clip = ForceRumble;
+                mAudioSource.Play();
+            }
+            else if (mLiftState == ForceLiftState.Selecting)
+            {
+                mAudioSource.Stop();
+            }
+        }
     }
 }

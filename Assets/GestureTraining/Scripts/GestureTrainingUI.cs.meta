@@ -3,6 +3,7 @@ guid: 712d2360e944ebb4aa887efd6fa97179
 timeCreated: 1493952219
 licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
   defaultReferences:
   - ButtonPrefab: {fileID: 1329369600055526, guid: ca43d4ee6c8a68c4988ecfed11572c19,

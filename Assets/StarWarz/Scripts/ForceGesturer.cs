@@ -119,6 +119,7 @@ public class ForceGesturer : UnityGesturer
     private void OnGlimpseDetected()
     {
         mGlimpse.gameObject.SetActive(true);
+        mGlimpse.Activate();
     }
 
     public void SetStatusText(string text)

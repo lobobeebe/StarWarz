@@ -3,11 +3,14 @@ using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
 [RequireComponent(typeof(ViveRoleSetter))]
+[RequireComponent(typeof(AudioSource))]
 public class LightningController : MonoBehaviour
 {
-    public GameObject Lightning;
+    public GameObject LightningPrefab;
+    public AudioClip LightningLoopClip;
 
-    private GameObject LightningInstance;
+    private AudioSource mAudioSource;
+    private GameObject mLightningInstance;
     private LightningBoltScript mLightningScript;
 
     private ViveRoleProperty mHandRole;
@@ -17,12 +20,14 @@ public class LightningController : MonoBehaviour
     {
         mHandRole = GetComponent<ViveRoleSetter>().viveRole;
 
-        if (Lightning)
+        if (LightningPrefab)
         {
-            LightningInstance = Instantiate(Lightning, transform);
-
-            mLightningScript = LightningInstance.GetComponent<LightningBoltScript>();
+            mLightningInstance = Instantiate(LightningPrefab, transform);
+            mLightningInstance.SetActive(false);
+            mLightningScript = mLightningInstance.GetComponent<LightningBoltScript>();
         }
+
+        mAudioSource = GetComponent<AudioSource>();
     }
 
     public void Activate()
@@ -37,16 +42,19 @@ public class LightningController : MonoBehaviour
 
     public void FixedUpdate()
     {
-        bool isActive = false;
-
-        if (LightningInstance && mIsActive)
+        if (mLightningInstance && mIsActive)
         {
-            if (ViveInput.GetPress(mHandRole, ControllerButton.Trigger))
+            if (ViveInput.GetPressDown(mHandRole, ControllerButton.Trigger))
             {
-                isActive = true;
+                mLightningInstance.SetActive(true);
+                mAudioSource.clip = LightningLoopClip;
+                mAudioSource.Play();
+            }
+            else if (ViveInput.GetPressUp(mHandRole, ControllerButton.Trigger))
+            {
+                mLightningInstance.SetActive(false);
+                mAudioSource.Stop();
             }
         }
-
-        LightningInstance.SetActive(isActive);
     }
 }

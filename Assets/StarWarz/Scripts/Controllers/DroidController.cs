@@ -5,10 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Pushable))]
 [RequireComponent(typeof(Liftable))]
 [RequireComponent(typeof(Lightningable))]
+[RequireComponent(typeof(AudioSource))]
 public class DroidController : MonoBehaviour
 {
     public GameObject LaserBoltPrefab;
     public float ImpulseDestructionThresholdSquared;
+
+    public AudioClip HoverLoopClip;
+    public AudioClip CollisionExplosionClip;
 
     // Movement
     private const float NEXT_LOCATION_DELAY_SECONDS = 15;
@@ -26,6 +30,7 @@ public class DroidController : MonoBehaviour
 
     private Vector3 mTargetLocation;
 
+    // Force
     private Pushable mPushable;
     private Liftable mLiftable;
     private Lightningable mLightningable;
@@ -35,6 +40,9 @@ public class DroidController : MonoBehaviour
     private float mShotDelaySeconds = 1f; // 1 Shot/s
     private float mNextShotTimeSeconds;
     private const float HALF_SHOT_OFFSET = .25f;
+
+    // Audio
+    private AudioSource mAudioSource;
 
     // Use this for initialization
     void Start ()
@@ -53,6 +61,10 @@ public class DroidController : MonoBehaviour
 
         mLightningable = GetComponent<Lightningable>();
         mLightningable.Lightninged += OnLightninged;
+
+        mAudioSource = GetComponent<AudioSource>();
+        mAudioSource.clip = HoverLoopClip;
+        mAudioSource.Play();
     }
 	
 	void FixedUpdate()
@@ -91,8 +103,10 @@ public class DroidController : MonoBehaviour
         }
     }
 
-    public void Explode()
+    public void Explode(bool byCollision = false)
     {
+        mAudioSource.PlayOneShot(CollisionExplosionClip);
+
         Destroy(gameObject);
     }
 
@@ -143,7 +157,7 @@ public class DroidController : MonoBehaviour
             LaserBoltController laserBolt = other.gameObject.GetComponentInParent<LaserBoltController>();
             if (laserBolt)
             {
-                laserBolt.Reflect();
+                laserBolt.Explode();
             }
         }
     }

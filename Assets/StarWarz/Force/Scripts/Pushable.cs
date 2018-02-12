@@ -5,8 +5,7 @@ public class Pushable : MonoBehaviour
 {
     public delegate void PushedHandler();
     public PushedHandler Pushed = delegate { };
-
-    private const string PUSH_TAG = "Push";
+    
     private Rigidbody mRigidbody;
     
     void Start()
