@@ -1,8 +1,19 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class BodyController : MonoBehaviour
 {
+    public AudioClip[] DamageAudioClips;
+
+    private int mNextClipIndex;
+    private AudioSource mAudioSource;
+
     public HealthWidget HealthWidget;
+
+    private void Start()
+    {
+        mAudioSource = GetComponent<AudioSource>();
+    }
 
     private void TakeDamage(float damage)
     {
@@ -10,6 +21,13 @@ public class BodyController : MonoBehaviour
         {
             HealthWidget.CurrentHealth -= damage;
         }
+
+        if (DamageAudioClips.Length > mNextClipIndex)
+        {
+            mAudioSource.PlayOneShot(DamageAudioClips[mNextClipIndex]);
+        }
+
+        mNextClipIndex = (mNextClipIndex + 1) % DamageAudioClips.Length;
     }
 
     private void OnTriggerEnter(Collider other)

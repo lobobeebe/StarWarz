@@ -54,12 +54,21 @@ public class BladeController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (mIsOn && other.tag == "Projectile")
+        if (mIsOn)
         {
-            LaserBoltController laserBolt = other.gameObject.GetComponentInParent<LaserBoltController>();
-            laserBolt.Reflect();
+            if (other.tag == "Projectile")
+            {
+                LaserBoltController laserBolt = other.gameObject.GetComponentInParent<LaserBoltController>();
+                laserBolt.Reflect();
 
-            mAudioSource.PlayOneShot(BladeReflectSound);
+                mAudioSource.PlayOneShot(BladeReflectSound);
+            }
+
+            Destroyable destroyable = other.gameObject.GetComponent<Destroyable>();
+            if (destroyable)
+            {
+                destroyable.Destroyed();
+            }
         }
     }
 }

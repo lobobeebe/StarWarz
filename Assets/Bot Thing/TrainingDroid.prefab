@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4881317729944328}
   - component: {fileID: 33234906406541940}
   - component: {fileID: 23088289759801876}
+  - component: {fileID: 135321132493782000}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -89,6 +90,8 @@ GameObject:
   - component: {fileID: 114264511230085634}
   - component: {fileID: 114408482956133958}
   - component: {fileID: 82774861026380512}
+  - component: {fileID: 114016985975411768}
+  - component: {fileID: 135148103429091574}
   m_Layer: 0
   m_Name: TrainingDroid
   m_TagString: Untagged
@@ -480,7 +483,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -545,6 +548,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114016985975411768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1528222355790250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f585ca46340af40afcedc72a44a43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114176089244293074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,10 +594,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaserBoltPrefab: {fileID: 1484178084865560, guid: 56a2ce592246fcb47bff1be65650d64d,
     type: 2}
+  Explosion: {fileID: 100000, guid: e0dc4d47bced6d54ab1461804114b5d0, type: 2}
   ImpulseDestructionThresholdSquared: 15
   HoverLoopClip: {fileID: 8300000, guid: b3bfe28f0f009b648aa748e75ec98383, type: 3}
-  CollisionExplosionClip: {fileID: 8300000, guid: 9a9fc6057ae07374c812f296c5795ad6,
-    type: 3}
+  ShootClip: {fileID: 8300000, guid: 268377631d22c5d4593d38d68b482ae8, type: 3}
 --- !u!114 &114936567632963246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -607,3 +621,27 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: -0.00037500262}
+--- !u!135 &135148103429091574
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1528222355790250}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: -0.7, z: 0}
+--- !u!135 &135321132493782000
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1140743412876646}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0126979
+  m_Center: {x: -0.000001013279, y: 0, z: 0.0000005066395}

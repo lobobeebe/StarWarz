@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 376355685}
   - component: {fileID: 376355684}
   - component: {fileID: 376355686}
+  - component: {fileID: 376355687}
   m_Layer: 0
   m_Name: BodyHitBox
   m_TagString: Untagged
@@ -537,7 +538,94 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b975f3062b4714c4dad0cfe9c2a5486a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageAudioClips:
+  - {fileID: 8300000, guid: 4afb81fc9581e714a992b1f18e84c24c, type: 3}
+  - {fileID: 8300000, guid: 81501f50e37bb5c488864193be034e75, type: 3}
+  - {fileID: 8300000, guid: c6749389b2c85e647b9a74fad6c06cc8, type: 3}
+  - {fileID: 8300000, guid: 385ad4391a9715a4ab8bca44c7435fe2, type: 3}
+  - {fileID: 8300000, guid: 88c34d3bc41eb564e98fc3e60204a9ad, type: 3}
+  - {fileID: 8300000, guid: 02347212152a6464c818670a1aae9d06, type: 3}
   HealthWidget: {fileID: 1475888131}
+--- !u!82 &376355687
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 376355682}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &414194112
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +731,71 @@ MeshCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: 153c93ed9149a084ca3358f3a186e9da, type: 3}
   m_PrefabInternal: {fileID: 1343360277}
+--- !u!1 &658196330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 658196332}
+  - component: {fileID: 658196331}
+  m_Layer: 0
+  m_Name: Steam Audio Manager Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &658196331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658196330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4576053e6ac4964287500815ebc2f7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioEngine: 0
+  materialPreset: 0
+  materialValue:
+    LowFreqAbsorption: 0.1
+    MidFreqAbsorption: 0.2
+    HighFreqAbsorption: 0.3
+    Scattering: 0.05
+    LowFreqTransmission: 0.1
+    MidFreqTransmission: 0.05
+    HighFreqTransmission: 0.03
+  simulationPreset: 0
+  simulationValue:
+    RealtimeRays: 4096
+    RealtimeSecondaryRays: 1024
+    RealtimeBounces: 2
+    BakeRays: 16384
+    BakeSecondaryRays: 4096
+    BakeBounces: 32
+    Duration: 1
+    AmbisonicsOrder: 1
+    MaxSources: 32
+  updateComponents: 1
+  currentAudioListener: {fileID: 0}
+  showLoadTimeOptions: 0
+  showMassBakingOptions: 0
+--- !u!4 &658196332
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 658196330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753318970
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,7 +1118,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1111490346}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1108,7 +1261,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -1430,8 +1583,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VideoClips:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 32900000, guid: 3973af9ac02ac3d469efa4e4cf5750a4, type: 3}
+  - {fileID: 32900000, guid: bf3a61f4fa8840a41a812a2e1d3c9371, type: 3}
+  - {fileID: 32900000, guid: d1f79b0d26ddb3d4ea21eb6bbb3d279e, type: 3}
+  - {fileID: 32900000, guid: 5d736be0a06de3f4196f8ed697c38ba7, type: 3}
+  - {fileID: 32900000, guid: 76d0b462100156846a7147db8dfd75aa, type: 3}
 --- !u!23 &1353163661
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1689,7 +1845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf64617abf52cb49b751f13422623e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForceRumble: {fileID: 8300000, guid: 2444b1c4460a4d24f9d1b0fdb9925dd0, type: 3}
+  ForceRumble: {fileID: 8300000, guid: 20afb3063055dcd4d963f80417a8f3e0, type: 3}
   LiftForce: 2000
   LiftSelector: {fileID: 1550007981608734, guid: 0a6757897abdbc6449673a9c4f4e8d79,
     type: 2}
@@ -1709,7 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LightningPrefab: {fileID: 178460, guid: a84cb58ef7faa67488076810242453b9, type: 2}
-  LightningLoopClip: {fileID: 8300000, guid: a5e642e7f334d7f4488499642e5f79fb, type: 3}
+  LightningLoopClip: {fileID: 8300000, guid: f856dce02c4d06c4e9516605c9d61e3e, type: 3}
 --- !u!114 &1592105059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1748,7 +1904,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
@@ -1922,7 +2078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c130c7c6c3ec5e47b96f6340e706cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DroidPrefab: {fileID: 1528222355790250, guid: a624b7c0b17bb2342837da53d2bfbfcb,
+  TrainingDroidPrefab: {fileID: 1528222355790250, guid: a624b7c0b17bb2342837da53d2bfbfcb,
     type: 2}
   Player: {fileID: 1490006401}
 --- !u!4 &1726680766

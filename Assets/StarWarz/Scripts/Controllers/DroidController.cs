@@ -1,18 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Pushable))]
 [RequireComponent(typeof(Liftable))]
 [RequireComponent(typeof(Lightningable))]
+[RequireComponent(typeof(Destroyable))]
 [RequireComponent(typeof(AudioSource))]
 public class DroidController : MonoBehaviour
 {
     public GameObject LaserBoltPrefab;
+    public GameObject Explosion;
     public float ImpulseDestructionThresholdSquared;
 
+    // Audio
     public AudioClip HoverLoopClip;
-    public AudioClip CollisionExplosionClip;
+    public AudioClip ShootClip;
 
     // Movement
     private const float NEXT_LOCATION_DELAY_SECONDS = 15;
@@ -34,11 +35,12 @@ public class DroidController : MonoBehaviour
     private Pushable mPushable;
     private Liftable mLiftable;
     private Lightningable mLightningable;
+    private Destroyable mDestroyable;
 
     // Firing
     private GameObject mPlayer;
     private float mShotDelaySeconds = 1f; // 1 Shot/s
-    private float mNextShotTimeSeconds;
+    private float mNextShotTimeSeconds = 5;
     private const float HALF_SHOT_OFFSET = .25f;
 
     // Audio
@@ -47,6 +49,8 @@ public class DroidController : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        mNextShotTimeSeconds = Time.time + 5; // Wait 5 seconds before firing next shot
+
         // The droid will rise directly above its spawn location to a random height.
         Vector3 firstTargetLocation = new Vector3(transform.position.x, BASE_TARGET_LOCATION_HEIGHT + (Random.value * TARGET_LOCATION_HEIGHT_OFFSET), transform.position.z);
         SetTargetLocation(firstTargetLocation);
@@ -61,6 +65,9 @@ public class DroidController : MonoBehaviour
 
         mLightningable = GetComponent<Lightningable>();
         mLightningable.Lightninged += OnLightninged;
+
+        mDestroyable = GetComponent<Destroyable>();
+        mDestroyable.Destroyed += Explode;
 
         mAudioSource = GetComponent<AudioSource>();
         mAudioSource.clip = HoverLoopClip;
@@ -77,11 +84,9 @@ public class DroidController : MonoBehaviour
                 transform.LookAt(mPlayer.transform.position + new Vector3(0, -.2f, 0));
             }
 
-            // Move towards target location
-            if (mTargetLocation != null)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, mTargetLocation, SPEED * Time.deltaTime);
-            }
+            // Move towards target location    
+            transform.position = Vector3.MoveTowards(transform.position, mTargetLocation, SPEED * Time.deltaTime);
+            
 
             // If the shot delay has completed, shoot
             if (Time.time > mNextShotTimeSeconds)
@@ -103,11 +108,11 @@ public class DroidController : MonoBehaviour
         }
     }
 
-    public void Explode(bool byCollision = false)
+    public void Explode()
     {
-        mAudioSource.PlayOneShot(CollisionExplosionClip);
-
         Destroy(gameObject);
+        
+        Instantiate(Explosion, transform.position, transform.rotation);
     }
 
     public void OnLifted()
@@ -137,6 +142,8 @@ public class DroidController : MonoBehaviour
 
     private void Shoot()
     {
+        mAudioSource.PlayOneShot(ShootClip);
+
         Vector3 positionOffset = new Vector3(-HALF_SHOT_OFFSET + Random.value * 2 * HALF_SHOT_OFFSET,
                 -HALF_SHOT_OFFSET + Random.value * 2 * HALF_SHOT_OFFSET,
                 -HALF_SHOT_OFFSET + Random.value * 2 * HALF_SHOT_OFFSET);

@@ -23,7 +23,7 @@ public class HandController : MonoBehaviour
         // Grip Button = Lightsaber or Force
         if (ViveInput.GetPressDown(mHandRole, ControllerButton.Grip))
         {
-            bool isUpdated = UpdateLightsaberAnchor();
+            UpdateLightsaberAnchor();
         }
 
         // Top Menu Button = Toggle Lightsaber
