@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using HTC.UnityPlugin.Vive;
+using System.Collections.Generic;
 
 public class DroidSpawnController : MonoBehaviour
 {
@@ -25,10 +26,11 @@ public class DroidSpawnController : MonoBehaviour
 
     private float mSpawnDelaySeconds;
     private float mNextSpawnTimeSeconds;
+    
+    private List<GameObject> mDroids = new List<GameObject>();
 
     // Game Mode
-    private GameMode mMode = GameMode.FreePlay;
-    private Vector2 mPreviousPressVector;
+    private GameMode mMode;
 
     public GameMode Mode
     {
@@ -39,24 +41,29 @@ public class DroidSpawnController : MonoBehaviour
 
         set
         {
-            mMode = value;
-
-            switch (mMode)
+            if (mMode != value)
             {
-                case GameMode.FreePlay:
-                    mSpawnDelaySeconds = FREE_PLAY_SPAWN_DELAY_SECONDS;
-                    mNextSpawnTimeSeconds = Time.time + FREE_PLAY_INITIAL_SPAWN_TIME_SECONDS;
-                    break;
+                ClearDroids();
 
-                case GameMode.Training:
-                    mSpawnDelaySeconds = TRAINING_MODE_SPAWN_DELAY_SECONDS;
-                    mNextSpawnTimeSeconds = Time.time + TRAINING_MODE_INITIAL_SPAWN_TIME_SECONDS;
-                    break;
+                mMode = value;
 
-                case GameMode.Survival:
-                    mSpawnDelaySeconds = SURVIVAL_SPAWN_DELAY_SECONDS;
-                    mNextSpawnTimeSeconds = Time.time + SURVIVAL_INITIAL_SPAWN_TIME_SECONDS;
-                    break;
+                switch (mMode)
+                {
+                    case GameMode.FreePlay:
+                        mSpawnDelaySeconds = FREE_PLAY_SPAWN_DELAY_SECONDS;
+                        mNextSpawnTimeSeconds = Time.time + FREE_PLAY_INITIAL_SPAWN_TIME_SECONDS;
+                        break;
+
+                    case GameMode.Training:
+                        mSpawnDelaySeconds = TRAINING_MODE_SPAWN_DELAY_SECONDS;
+                        mNextSpawnTimeSeconds = Time.time + TRAINING_MODE_INITIAL_SPAWN_TIME_SECONDS;
+                        break;
+
+                    case GameMode.Survival:
+                        mSpawnDelaySeconds = SURVIVAL_SPAWN_DELAY_SECONDS;
+                        mNextSpawnTimeSeconds = Time.time + SURVIVAL_INITIAL_SPAWN_TIME_SECONDS;
+                        break;
+                }
             }
         }
     }
@@ -64,6 +71,16 @@ public class DroidSpawnController : MonoBehaviour
     private void Start()
     {
         Mode = GameMode.FreePlay;
+    }
+
+    void ClearDroids()
+    {
+        foreach(GameObject obj in mDroids)
+        {
+            Destroy(obj);
+        }
+
+        mDroids.Clear();
     }
 
     // Update is called once per frame
@@ -75,25 +92,24 @@ public class DroidSpawnController : MonoBehaviour
             Spawn();
             mNextSpawnTimeSeconds = Time.time + mSpawnDelaySeconds;
         }
-
-        Vector2 pressVector = ViveInput.GetPadPressVector(HandRole.LeftHand);
-        if (pressVector == Vector2.zero && mPreviousPressVector != Vector2.zero)
+        
+        if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Menu))
         {
-            if (mPreviousPressVector.x > Mathf.Abs(mPreviousPressVector.y))
+            switch (Mode)
             {
-                Mode = GameMode.FreePlay;
-            }
-            else if (mPreviousPressVector.x < -Mathf.Abs(mPreviousPressVector.y))
-            {
-                Mode = GameMode.Training;
-            }
-            else if (mPreviousPressVector.y > Mathf.Abs(mPreviousPressVector.x))
-            {
-                Mode = GameMode.Survival;
+                case GameMode.FreePlay:
+                    Mode = GameMode.Training;
+                    break;
+
+                case GameMode.Training:
+                    Mode = GameMode.Survival;
+                    break;
+
+                case GameMode.Survival:
+                    Mode = GameMode.FreePlay;
+                    break;
             }
         }
-
-        mPreviousPressVector = pressVector;
     }
 
     void Spawn()
@@ -101,6 +117,7 @@ public class DroidSpawnController : MonoBehaviour
         // Choose a random spawn
         Vector3 spawnLocation = new Vector3(-5 + Random.value * 10, .5f, -5 + Random.value * 10);
         GameObject droid = Instantiate(TrainingDroidPrefab, spawnLocation, Quaternion.identity);
+        mDroids.Add(droid);
 
         DroidController droidController = droid.GetComponent<DroidController>();
         droidController.Player = Player;

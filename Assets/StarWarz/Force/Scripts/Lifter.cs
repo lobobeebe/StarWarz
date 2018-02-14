@@ -91,6 +91,13 @@ public class Lifter : MonoBehaviour
         }
         else if (LiftState == ForceLiftState.Lifting)
         {
+            if (ViveInput.GetPressDown(mHand, ControllerButton.Trigger))
+            {
+                // Stop the object.
+                Rigidbody liftableRigidbody = mCurrentLiftable.GetComponent<Rigidbody>();
+                liftableRigidbody.velocity = Vector3.zero;
+            }
+
             if (ViveInput.GetPress(mHand, ControllerButton.Trigger))
             {
                 Rigidbody liftableRigidbody = mCurrentLiftable.GetComponent<Rigidbody>();
