@@ -10,6 +10,7 @@ public class BladeController : MonoBehaviour
     public AudioClip BladeOffSound;
     public AudioClip BladeConstantSound;
     public AudioClip BladeReflectSound;
+    public Light BladeLight;
 
     private AudioSource mAudioSource;
 
@@ -20,6 +21,7 @@ public class BladeController : MonoBehaviour
     {
         mAudioSource = GetComponent<AudioSource>();
         mAudioSource.clip = BladeConstantSound;
+        BladeLight.intensity = 0;
     }
 
     public void ActivateBlade(bool doActivate)
@@ -28,11 +30,13 @@ public class BladeController : MonoBehaviour
         {
             mAudioSource.PlayOneShot(BladeOnSound);
             mAudioSource.Play();
+            BladeLight.intensity = 1;
         }
         else if (!doActivate && mIsOn)
         {
             mAudioSource.Stop();
             mAudioSource.PlayOneShot(BladeOffSound);
+            BladeLight.intensity = 0;
         }
 
         mIsOn = doActivate;
