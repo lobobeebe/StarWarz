@@ -103,6 +103,6 @@ public class DroidSpawnController : MonoBehaviour
         GameObject droid = Instantiate(TrainingDroidPrefab, spawnLocation, Quaternion.identity);
 
         DroidController droidController = droid.GetComponent<DroidController>();
-        droidController.SetTargetPlayer(Player);
+        droidController.Player = Player;
     }
 }

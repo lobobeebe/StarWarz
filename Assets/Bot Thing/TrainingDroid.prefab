@@ -596,6 +596,7 @@ MonoBehaviour:
     type: 2}
   Explosion: {fileID: 100000, guid: e0dc4d47bced6d54ab1461804114b5d0, type: 2}
   ImpulseDestructionThresholdSquared: 15
+  Player: {fileID: 0}
   HoverLoopClip: {fileID: 8300000, guid: b3bfe28f0f009b648aa748e75ec98383, type: 3}
   ShootClip: {fileID: 8300000, guid: 268377631d22c5d4593d38d68b482ae8, type: 3}
 --- !u!114 &114936567632963246

@@ -10,6 +10,7 @@ public class DroidController : MonoBehaviour
     public GameObject LaserBoltPrefab;
     public GameObject Explosion;
     public float ImpulseDestructionThresholdSquared;
+    public GameObject Player;
 
     // Audio
     public AudioClip HoverLoopClip;
@@ -38,7 +39,6 @@ public class DroidController : MonoBehaviour
     private Destroyable mDestroyable;
 
     // Firing
-    private GameObject mPlayer;
     private float mShotDelaySeconds = 1f; // 1 Shot/s
     private float mNextShotTimeSeconds = 5;
     private const float HALF_SHOT_OFFSET = .25f;
@@ -79,9 +79,9 @@ public class DroidController : MonoBehaviour
         if (mIsMovementActive)
         {
             // Rotate to look at the player
-            if (mPlayer != null)
+            if (Player != null)
             {
-                transform.LookAt(mPlayer.transform.position + new Vector3(0, -.2f, 0));
+                transform.LookAt(Player.transform.position + new Vector3(0, -.2f, 0));
             }
 
             // Move towards target location    
@@ -130,11 +130,6 @@ public class DroidController : MonoBehaviour
         mIsMovementActive = false;
     }
 
-    public void SetTargetPlayer(GameObject player)
-    {
-        mPlayer = player;
-    }
-
     public void SetTargetLocation(Vector3 targetLocation)
     {
         mTargetLocation = targetLocation;
@@ -148,11 +143,14 @@ public class DroidController : MonoBehaviour
                 -HALF_SHOT_OFFSET + Random.value * 2 * HALF_SHOT_OFFSET,
                 -HALF_SHOT_OFFSET + Random.value * 2 * HALF_SHOT_OFFSET);
 
-        Vector3 laserDirection = (mPlayer.transform.position + new Vector3(0, -.2f, 0) + positionOffset) - transform.position;
-        Quaternion laserRotation = Quaternion.LookRotation(laserDirection, Vector3.up);
-
-        GameObject laserBolt = Instantiate(LaserBoltPrefab, transform.position + (transform.forward * .5f), laserRotation);
-        laserBolt.GetComponent<LaserBoltController>().SetParentDroid(gameObject);
+        if (Player)
+        {
+            Vector3 laserDirection = (Player.transform.position + new Vector3(0, -.2f, 0) + positionOffset) - transform.position;
+            Quaternion laserRotation = Quaternion.LookRotation(laserDirection, Vector3.up);
+            
+            GameObject laserBolt = Instantiate(LaserBoltPrefab, transform.position + (transform.forward * .5f), laserRotation);
+            laserBolt.GetComponent<LaserBoltController>().SetParentDroid(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
