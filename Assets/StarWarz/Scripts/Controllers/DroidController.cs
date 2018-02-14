@@ -12,6 +12,8 @@ public class DroidController : MonoBehaviour
     public float ImpulseDestructionThresholdSquared;
     public GameObject Player;
 
+    public bool mIsAttackDroid = false;
+
     // Audio
     public AudioClip HoverLoopClip;
     public AudioClip ShootClip;
@@ -84,26 +86,33 @@ public class DroidController : MonoBehaviour
                 transform.LookAt(Player.transform.position + new Vector3(0, -.2f, 0));
             }
 
-            // Move towards target location    
-            transform.position = Vector3.MoveTowards(transform.position, mTargetLocation, SPEED * Time.deltaTime);
-            
-
-            // If the shot delay has completed, shoot
-            if (Time.time > mNextShotTimeSeconds)
+            if (mIsAttackDroid)
             {
-                Shoot();
-                mNextShotTimeSeconds = Time.time + mShotDelaySeconds;
+                // Move towards the player
+                transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, SPEED * Time.deltaTime);
             }
-
-            // If the next target delay has completed, update target location
-            if (Time.time > mNextLocationTimeSeconds)
+            else
             {
-                Vector3 nextTargetLocation = new Vector3(BASE_TARGET_LOCATION_HORIZONTAL + (Random.value * TARGET_LOCATION_HORIZONTAL_OFFSET),
-                    BASE_TARGET_LOCATION_HEIGHT + (Random.value * TARGET_LOCATION_HEIGHT_OFFSET),
-                    BASE_TARGET_LOCATION_HORIZONTAL + (Random.value * TARGET_LOCATION_HORIZONTAL_OFFSET));
-                SetTargetLocation(nextTargetLocation);
+                // Move towards target location    
+                transform.position = Vector3.MoveTowards(transform.position, mTargetLocation, SPEED * Time.deltaTime);
+                
+                // If the shot delay has completed, shoot
+                if (Time.time > mNextShotTimeSeconds)
+                {
+                    Shoot();
+                    mNextShotTimeSeconds = Time.time + mShotDelaySeconds;
+                }
 
-                mNextLocationTimeSeconds = Time.time + NEXT_LOCATION_DELAY_SECONDS;
+                // If the next target delay has completed, update target location
+                if (Time.time > mNextLocationTimeSeconds)
+                {
+                    Vector3 nextTargetLocation = new Vector3(BASE_TARGET_LOCATION_HORIZONTAL + (Random.value * TARGET_LOCATION_HORIZONTAL_OFFSET),
+                        BASE_TARGET_LOCATION_HEIGHT + (Random.value * TARGET_LOCATION_HEIGHT_OFFSET),
+                        BASE_TARGET_LOCATION_HORIZONTAL + (Random.value * TARGET_LOCATION_HORIZONTAL_OFFSET));
+                    SetTargetLocation(nextTargetLocation);
+
+                    mNextLocationTimeSeconds = Time.time + NEXT_LOCATION_DELAY_SECONDS;
+                }
             }
         }
     }
@@ -157,12 +166,22 @@ public class DroidController : MonoBehaviour
     {
         if (other.gameObject.tag == "Projectile")
         {
-            Explode();
+            //Explode();
 
             LaserBoltController laserBolt = other.gameObject.GetComponentInParent<LaserBoltController>();
             if (laserBolt)
             {
                 laserBolt.Explode();
+            }
+        }
+        else if (other.gameObject.tag == "Player")
+        {
+            Explode();
+
+            BodyController controller = other.gameObject.GetComponent<BodyController>();
+            if (controller)
+            {
+                controller.TakeDamage(10);
             }
         }
     }

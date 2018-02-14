@@ -15,7 +15,7 @@ public class BodyController : MonoBehaviour
         mAudioSource = GetComponent<AudioSource>();
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (HealthWidget)
         {

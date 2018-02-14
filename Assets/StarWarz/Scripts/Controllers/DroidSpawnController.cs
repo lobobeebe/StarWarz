@@ -115,11 +115,17 @@ public class DroidSpawnController : MonoBehaviour
     void Spawn()
     {
         // Choose a random spawn
-        Vector3 spawnLocation = new Vector3(-5 + Random.value * 10, .5f, -5 + Random.value * 10);
+        float randomRotation = Random.value * Mathf.PI * 2;
+        Vector3 spawnLocation = new Vector3(Mathf.Cos(randomRotation) * 10, .5f + Random.value * 3, Mathf.Sin(randomRotation) * 10);
         GameObject droid = Instantiate(TrainingDroidPrefab, spawnLocation, Quaternion.identity);
         mDroids.Add(droid);
 
         DroidController droidController = droid.GetComponent<DroidController>();
         droidController.Player = Player;
+
+        if (Mode == GameMode.Survival)
+        {
+            droidController.mIsAttackDroid = true;
+        }
     }
 }
