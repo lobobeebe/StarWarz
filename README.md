@@ -1,11 +1,11 @@
 # StarWarz
-School project. TBA.
+School project.
 
 ## Completed
 Player Body
 * Shall be an Invisible game object representing the body
 * Shall act as the hit box for the player's torso
-* Shall maintain the same X,Z position and y rotation as SteamVR headset
+* Shall maintain the same X,Z position and Y rotation as SteamVR headset
 * Shall hold a Lightsaber "Holster" or clip on front of object
 
 Player Hands
@@ -29,7 +29,10 @@ Holster
 * Shall provide an anchor transform for an unheld Lightsaber Hilt
 
 Lightsaber
-* TBD
+* Press the menu on the right hand controller to activate.
+* Can be used to deflect lasers
+* Can strike enemies to make them explode
+* Plays appropriate sound and gives off a glow
 
 Training Droid
 * Passive audio "buzz" emit from Droid
